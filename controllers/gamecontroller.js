@@ -103,9 +103,15 @@ router.put('/update/:id', (req, res) => {
             },
 
             (err) => {
-                res.status(500).json({
-                    message: err.message,
-                });
+                if (err.message.includes("null")) {
+                    res.status(404).json({
+                        message: "Game not found.",
+                    });
+                } else {
+                    res.status(500).json({
+                        message: err.message,
+                    });
+                }
             }
         );
 });
