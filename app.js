@@ -1,8 +1,8 @@
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
 const db = require('./db');
-var user = require('./controllers/usercontroller');
-var game = require('./controllers/gamecontroller')
+const user = require('./controllers/usercontroller');
+const game = require('./controllers/gamecontroller')
 
 db.sync();
 app.use(require('body-parser').json());

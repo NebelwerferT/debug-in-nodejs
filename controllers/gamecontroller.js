@@ -1,7 +1,7 @@
-var router = require('express').Router();
-var sequelize = require('../db');
+const router = require('express').Router();
+const sequelize = require('../db');
 const Sequelize = require('sequelize');
-var Game = require('../models/game')(sequelize, Sequelize.DataTypes);
+const Game = require('../models/game')(sequelize, Sequelize.DataTypes);
 
 router.get('/all', (req, res) => {
     Game.findAll({ where: { owner_id: req.user.id } })
