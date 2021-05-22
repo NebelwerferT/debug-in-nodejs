@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const sequelize = require('../db');
-const Sequelize = require('sequelize');
-const User = require('../models/user')(sequelize, Sequelize.DataTypes);
+const { DataTypes } = require('sequelize');
+const User = require('../models/user')(sequelize, DataTypes);
 
 module.exports = function (req, res, next) {
     if (req.method == 'OPTIONS') {
@@ -9,25 +9,41 @@ module.exports = function (req, res, next) {
     } else {
         const sessionToken = req.headers.authorization;
         console.log(sessionToken);
-        if (!sessionToken) return res.status(403).send({ auth: false, message: "No token provided." });
-        else {
-            jwt.verify(sessionToken, 'lets_play_sum_games_man', (err, decoded) => {
-                if (decoded) {
-                    User.findOne({ where: { id: decoded.id } })
-                        .then(
-                            user => {
-                                req.user = user;
-                                console.log(`user: ${user}`)
-                                next()
-                            },
-                            () => {
-                                res.status(401).send({ error: "not authorized" });
-                            })
-
-                } else {
-                    res.status(400).send({ error: "not authorized" })
-                }
+        if (!sessionToken) {
+            res.status(403).json({
+                auth: false,
+                message: "No token provided.",
             });
+        } else {
+            jwt.verify(
+                sessionToken,
+                'lets_play_sum_games_man',
+                (err, decoded) => {
+                    if (decoded) {
+                        User.findOne({
+                            where: {
+                                id: decoded.id,
+                            }
+                        })
+                            .then(
+                                user => {
+                                    req.user = user;
+                                    console.log(`user: ${user}`);
+                                    next();
+                                },
+
+                                () => {
+                                    res.status(401).json({
+                                        error: "not authorized",
+                                    });
+                                })
+
+                    } else {
+                        res.status(400).json({
+                            error: "not authorized",
+                        });
+                    }
+                });
         }
     }
-}
+};
