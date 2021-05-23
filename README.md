@@ -19,7 +19,7 @@ npm install
 
 ## Database Connection
 
-To connect the database, you need to modify the ./db.js file with the appropriate database name, username, and password. If necessary, you can change the port number for the database in the port: <number> field.
+To connect the database, you need to modify the ./db.js file with the appropriate database name, username, and password. If necessary, you can change the port number for the database in the "port: number" field.
 
 ```
 const sequelize = new Sequelize('dbname', 'username', 'password', {
