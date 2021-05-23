@@ -27,25 +27,25 @@ After running the application on port (4000 by default), you can send requests t
 
 #### get:
 
-- localhost: 4000 / api / game / all
+- localhost:4000/api/game/all
 
-- localhost: 4000 / api / game /: id
+- localhost:4000/api/game/:id
 
 #### post:
 
-- localhost: 4000 / api / auth / signup
+- localhost:4000/api/auth/signup
 
-- localhost: 4000 / api / auth / signin
+- localhost:4000/api/auth/signin
 
-- localhost: 4000 / api / game / create
+- localhost:4000/api/game/create
 
 #### put:
 
-- localhost: 4000 / api / game / update /: id
+- localhost:4000/api/game/update/:id
 
 #### delete:
 
-- localhost: 4000 / api / game / remove /: id
+- localhost:4000/api/game/remove/:id
 
 ## Debugging in VSCode
 
