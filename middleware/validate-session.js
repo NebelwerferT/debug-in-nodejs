@@ -28,7 +28,7 @@ module.exports = function (req, res, next) {
                             .then(
                                 user => {
                                     req.user = user;
-                                    console.log(`user: ${user}`);
+                                    console.log(`user: ${JSON.stringify(user.dataValues)}`);
                                     next();
                                 },
 
