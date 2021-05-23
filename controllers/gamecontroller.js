@@ -2,6 +2,7 @@ const router = require('express').Router();
 const sequelize = require('../db');
 const { DataTypes } = require('sequelize');
 const Game = require('../models/game')(sequelize, DataTypes);
+const { StatusCodes } = require('http-status-codes');
 
 router.get('/all', (req, res) => {
     Game.findAll({
@@ -11,14 +12,14 @@ router.get('/all', (req, res) => {
     })
         .then(
             (games) => {
-                res.status(200).json({
+                res.status(StatusCodes.OK).json({
                     games: games,
                     message: "Data fetched.",
                 });
             },
 
             () => {
-                res.status(500).json({
+                res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
                     message: "Data not found",
                 });
             }
@@ -35,19 +36,19 @@ router.get('/:id', (req, res) => {
         .then(
             (game) => {
                 if (game) {
-                    res.status(200).json({
+                    res.status(StatusCodes.OK).json({
                         game: game,
                     });
 
                 } else {
-                    res.status(404).json({
+                    res.status(StatusCodes.NOT_FOUND).json({
                         message: "Game not found.",
                     });
                 }
             },
 
             () => {
-                res.status(500).json({
+                res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
                     message: "Data not found.",
                 });
             }
@@ -65,14 +66,14 @@ router.post('/create', (req, res) => {
     })
         .then(
             (game) => {
-                res.status(200).json({
+                res.status(StatusCodes.OK).json({
                     game: game,
                     message: "Game created.",
                 });
             },
 
             (err) => {
-                res.status(500).json({
+                res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
                     error: err.message,
                 });
             }
@@ -96,7 +97,7 @@ router.put('/update/:id', (req, res) => {
     })
         .then(
             (updatedGame) => {
-                res.status(200).json({
+                res.status(StatusCodes.OK).json({
                     updatedGame: updatedGame[1],
                     message: "Successfully updated.",
                 });
@@ -104,11 +105,11 @@ router.put('/update/:id', (req, res) => {
 
             (err) => {
                 if (err.message.includes("null")) {
-                    res.status(404).json({
+                    res.status(StatusCodes.NOT_FOUND).json({
                         message: "Game not found.",
                     });
                 } else {
-                    res.status(500).json({
+                    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
                         message: err.message,
                     });
                 }
@@ -134,27 +135,27 @@ router.delete('/remove/:id', (req, res) => {
                     })
                         .then(
                             () => {
-                                res.status(200).json({
+                                res.status(StatusCodes.OK).json({
                                     deletedGame: deletedGame,
                                     message: "Successfully deleted",
                                 });
                             },
 
                             (err) => {
-                                res.status(500).json({
+                                res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
                                     error: err.message,
                                 });
                             }
                         );
                 } else {
-                    res.status(404).json({
+                    res.status(StatusCodes.NOT_FOUND).json({
                         message: "Game not found.",
                     });
                 }
             },
 
             () => {
-                res.status(500).json({
+                res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
                     message: "Data not found.",
                 });
             }

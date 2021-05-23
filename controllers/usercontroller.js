@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const sequelize = require('../db');
 const { DataTypes } = require('sequelize');
 const User = require('../models/user')(sequelize, DataTypes);
+const { StatusCodes } = require('http-status-codes');
 
 router.post('/signup', (req, res) => {
     User.findOne({
@@ -30,20 +31,20 @@ router.post('/signup', (req, res) => {
                                     expiresIn: (60 * 60 * 24),
                                 }
                             );
-                            res.status(200).json({
+                            res.status(StatusCodes.OK).json({
                                 user: user,
                                 token: token,
                             })
                         },
 
                         (err) => {
-                            res.status(500).json({
+                            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
                                 error: err.message,
                             });
                         }
                     );
             } else {
-                res.status(409).json({
+                res.status(StatusCodes.CONFLICT).json({
                     error: "A user with this username already exists.",
                 });
             }
@@ -78,13 +79,13 @@ router.post('/signin', (req, res) => {
                                 sessionToken: token,
                             });
                         } else {
-                            res.status(502).json({
+                            res.status(StatusCodes.BAD_GATEWAY).json({
                                 error: "Passwords do not match.",
                             });
                         }
                     });
             } else {
-                res.status(403).json({
+                res.status(StatusCodes.FORBIDDEN).json({
                     error: "User not found.",
                 });
             }

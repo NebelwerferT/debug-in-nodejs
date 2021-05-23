@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const sequelize = require('../db');
 const { DataTypes } = require('sequelize');
 const User = require('../models/user')(sequelize, DataTypes);
+const { StatusCodes } = require('http-status-codes');
 
 module.exports = function (req, res, next) {
     if (req.method == 'OPTIONS') {
@@ -10,7 +11,7 @@ module.exports = function (req, res, next) {
         const sessionToken = req.headers.authorization;
         console.log(sessionToken);
         if (!sessionToken) {
-            res.status(403).json({
+            res.status(StatusCodes.FORBIDDEN).json({
                 auth: false,
                 message: "No token provided.",
             });
@@ -33,13 +34,13 @@ module.exports = function (req, res, next) {
                                 },
 
                                 () => {
-                                    res.status(401).json({
+                                    res.status(StatusCodes.UNAUTHORIZED).json({
                                         error: "not authorized",
                                     });
                                 })
 
                     } else {
-                        res.status(400).json({
+                        res.status(StatusCodes.BAD_REQUEST).json({
                             error: "not authorized",
                         });
                     }
